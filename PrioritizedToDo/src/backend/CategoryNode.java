@@ -144,7 +144,7 @@ public class CategoryNode {
     /******************************************************************/
     
     public String getName() {
-	return null;
+	return this.name;
     }
     
     public CategoryNode getChild(int index) {
@@ -156,7 +156,7 @@ public class CategoryNode {
     }
     
     public CategoryNode getParent() {
-	return null;
+	return this.parent;
     }
     
     public int getPercentComplete() {
@@ -171,11 +171,11 @@ public class CategoryNode {
     }
     
     public LocalDateTime getDeadline() {
-	return null;
+	return this.deadline;
     }
     
     public LocalDateTime getCompletionDate() {
-	return null;
+	return this.completionDate;
     }
     
     /******************************************************************/
