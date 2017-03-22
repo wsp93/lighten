@@ -21,7 +21,7 @@ public class Helper {
 					    CategoryNode child, String childName) {
 	assertTrue(childName + " is not " + parentName + "'s child", 
 		   isChild(child, parent));
-	assertSame(parentName + " is not " + child + "'s parent", 
+	assertSame(parentName + " is not " + childName + "'s parent", 
 		   parent, child.getParent());
     }
     
@@ -29,7 +29,7 @@ public class Helper {
 					    CategoryNode child, String childName) {
 	assertFalse(childName + " is " + parentName + "'s child", 
 		   isChild(child, parent));
-	assertNotSame(parentName + " is " + child + "'s parent", 
+	assertNotSame(parentName + " is " + childName + "'s parent", 
 		   parent, child.getParent());
     }
     

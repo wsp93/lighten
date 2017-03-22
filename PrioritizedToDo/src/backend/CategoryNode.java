@@ -11,6 +11,7 @@ package backend;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Represents a Category whose progress we wish to track. Categories may have
@@ -32,6 +33,7 @@ public class CategoryNode {
     //				   TO DO			      //
     ////////////////////////////////////////////////////////////////////
     //								      //
+    // -Implement add()'s percentComplete logic			      //
     // -Should percentComplete be a double?			      //
     // -Data should be persistent. Use a DB.			      //
     // -Nodes sortable by deadline/% complete/both (group by)	      //
@@ -97,7 +99,7 @@ public class CategoryNode {
 	
 	children.add(child);
 	child.setParent(this);
-	// TO DO: change percentComplete accordingly
+	adjustPercentCompleteAdd();
     }
     
     /**
@@ -106,7 +108,21 @@ public class CategoryNode {
      * @param child The Node to be removed.
      */
     public void remove(CategoryNode child) {
+	if(child == null || child == this) {
+	    throw new IllegalArgumentException();
+	}
+	if(children.isEmpty()) {
+	    throw new NoSuchElementException();
+	}
 	
+	for(CategoryNode grandchild : child.children) {
+	    grandchild.parent = this;
+	    this.children.add(grandchild);
+	}
+	
+	children.remove(child);
+	child.parent = null;
+	adjustPercentCompleteRemove();
     }
     
     /**
@@ -213,5 +229,13 @@ public class CategoryNode {
     
     private void setCompletionDate(LocalDateTime completionDate) {
 	
+    }
+
+    private void adjustPercentCompleteAdd() {
+	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void adjustPercentCompleteRemove() {
+	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
