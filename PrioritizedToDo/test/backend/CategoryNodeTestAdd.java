@@ -1,5 +1,6 @@
 package backend;
 
+import static backend.Helper.assertExpectedPercent;
 import static backend.Helper.assertParentChildRelationship;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -308,15 +309,260 @@ public class CategoryNodeTestAdd {
     @Test
     public void testAddPercentOutputRoot() throws Exception {
 	CategoryNode root = new CategoryNode("root");
-	assertTrue("Root just added; should be 0% complete", root.getPercentComplete() == 0);
+	assertEquals("Root just added; should be 0% complete", root.getPercentComplete(), 0);
     }
     
     /**
      * Test of add method, of class CategoryNode.
-     * Case: 
+     * Case: Add a single incomplete Node as a direct descendent to another 
+     * incomplete Node.
      */
     @Test
-    public void testAddPercent() {
-	fail("The test case is a prototype.");
+    public void testAddPercentOneIncomplete() {
+	CategoryNode root = new CategoryNode("root");
+	CategoryNode child = new CategoryNode("child");
+	root.add(child);
+	
+	assertEquals("Incomplete Node added to another Incomplete Node should"
+		+ " result in percentComplete 0", root.getPercentComplete(), 0);
+    }
+    
+    /**
+     * Test of add method, of class CategoryNode.
+     * Case: Add a childless Node, and get the percentComplete of the childless
+     * Node. Should return the percentComplete of that Node, NOT div by 0.
+     */
+    @Test
+    public void testAddPercentAttemptDivByZero() {
+	CategoryNode root = new CategoryNode("root");
+	CategoryNode child = new CategoryNode("child");
+	root.add(child);
+	
+	assertEquals(child.getPercentComplete(), 0);
+    }
+    
+    /**
+     * Test of add method, of class CategoryNode.
+     * Case: Add a single Node to an complete Node.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddPercentOneComplete() {
+	CategoryNode root = new CategoryNode("root");
+	root.complete();
+	
+	CategoryNode child = new CategoryNode("child");
+	root.add(child);
+    }
+    
+    /**
+     * Test of add method, of class CategoryNode.
+     * Case: Add a direct descendent to a partially complete Node;
+     * only one descendent is marked complete.
+     */
+    public void testAddPercentPartialCompleteAddDirDesc() throws Exception {
+	CategoryNode root = new CategoryNode("root");
+	CategoryNode complChild = new CategoryNode("complChild");
+	CategoryNode incomplChild1 = new CategoryNode("incomplChild1");
+	CategoryNode incomplChild2 = new CategoryNode("incomplChild2");
+	complChild.complete();
+	
+	root.add(complChild);
+	root.add(incomplChild1);
+	root.add(incomplChild2);
+	
+	root.add(new CategoryNode("incomplChild3"));
+	assertExpectedPercent(root, 1, 4); // 1 complete leaf, 4 total leaves
+    }
+    
+    /**
+     * Test of add method, of class CategoryNode.
+     * Case: Add a single grandchild to a partially complete Node;
+     * only one direct descendent of the root is marked complete.
+     */
+    public void testAddPercentPartialCompleteAddOneIndirDesc() throws Exception {
+	CategoryNode root = new CategoryNode("root");
+	CategoryNode complChild = new CategoryNode("complChild");
+	CategoryNode incomplChild1 = new CategoryNode("incomplChild1");
+	CategoryNode incomplChild2 = new CategoryNode("incomplChild2");
+	complChild.complete();
+	
+	root.add(complChild);
+	root.add(incomplChild1);
+	root.add(incomplChild2);
+	
+	incomplChild1.add(new CategoryNode("incomplGrandchild"));
+	assertExpectedPercent(root, 1, 3);
+    }
+    
+    /**
+     * Test of add method, of class CategoryNode.
+     * Case: Add more than one grandchild to a partially complete Node;
+     * only one direct descendent of the root is marked complete.
+     */
+    public void testAddPercentPartialCompleteAddMultIndirDesc() throws Exception {
+	CategoryNode root = new CategoryNode("root");
+	CategoryNode complChild = new CategoryNode("complChild");
+	CategoryNode incomplChild1 = new CategoryNode("incomplChild1");
+	CategoryNode incomplChild2 = new CategoryNode("incomplChild2");
+	complChild.complete();
+	
+	root.add(complChild);
+	root.add(incomplChild1);
+	root.add(incomplChild2);
+	
+	incomplChild1.add(new CategoryNode("incomplGrandchild1"));
+	incomplChild1.add(new CategoryNode("incomplGrandchild2"));
+	assertExpectedPercent(root, 1, 4);
+    }
+    
+    /**
+     * Test of add method, of class CategoryNode.
+     * Case: Add a direct descendent to a partially complete Node;
+     * more than one descendent is marked complete.
+     */
+    public void testAddPercentMultPartialCompleteAddDirDesc() throws Exception {
+	CategoryNode root = new CategoryNode("root");
+	CategoryNode complChild1 = new CategoryNode("complChild1");
+	CategoryNode complChild2 = new CategoryNode("complChild2");
+	CategoryNode incomplChild1 = new CategoryNode("incomplChild1");
+	
+	complChild1.complete();
+	complChild2.complete();
+	
+	root.add(complChild1);
+	root.add(complChild2);
+	root.add(incomplChild1);
+	
+	root.add(new CategoryNode("incomplChild2"));
+	assertExpectedPercent(root, 2, 4);
+    }
+    
+    /**
+     * Test of add method, of class CategoryNode.
+     * Case: Add a single grandchild to a partially complete Node;
+     * more than one direct descendent of the root is marked complete.
+     */
+    public void testAddPercentMultPartialCompleteAddOneIndirDesc() throws Exception {
+	CategoryNode root = new CategoryNode("root");
+	CategoryNode complChild1 = new CategoryNode("complChild1");
+	CategoryNode complChild2 = new CategoryNode("complChild2");
+	CategoryNode incomplChild1 = new CategoryNode("incomplChild1");
+	
+	complChild1.complete();
+	complChild2.complete();
+	
+	root.add(complChild1);
+	root.add(complChild2);
+	root.add(incomplChild1);
+	
+	incomplChild1.add(new CategoryNode("incomplGrandchild"));
+	assertExpectedPercent(root, 2, 3);
+    }
+    
+    /**
+     * Test of add method, of class CategoryNode.
+     * Case: Add more than one grandchild to a partially complete Node;
+     * more than one direct descendent of the root is marked complete.
+     */
+    public void testAddPercentMultPartialCompleteAddMultIndirDesc() throws Exception {
+	CategoryNode root = new CategoryNode("root");
+	CategoryNode complChild1 = new CategoryNode("complChild1");
+	CategoryNode complChild2 = new CategoryNode("complChild2");
+	CategoryNode incomplChild1 = new CategoryNode("incomplChild1");
+	
+	complChild1.complete();
+	complChild2.complete();
+	
+	root.add(complChild1);
+	root.add(complChild2);
+	root.add(incomplChild1);
+	
+	incomplChild1.add(new CategoryNode("incomplGrandchild1"));
+	incomplChild1.add(new CategoryNode("incomplGrandchild2"));
+	assertExpectedPercent(root, 2, 4);
+    }
+    
+    /**
+     * Test of add method, of class CategoryNode.
+     * Case: Check that adding a grandchild propagates the changes up to
+     * both the child and the parent.
+     */
+    public void testAddPercentAddGrandchildPropagateUp() throws Exception {
+	CategoryNode parent = new CategoryNode("parent");
+	
+	CategoryNode complChild = new CategoryNode("complChild");
+	complChild.complete();
+	CategoryNode incomplChild1 = new CategoryNode("incomplChild1");
+	
+	parent.add(complChild);
+	parent.add(incomplChild1);
+	
+	CategoryNode complGrandChild1 = new CategoryNode("complGrandChild1");
+	complGrandChild1.complete();
+	CategoryNode incomplGrandChild1 = new CategoryNode("incomplGrandChild1");
+	
+	incomplChild1.add(complGrandChild1);
+	incomplChild1.add(incomplGrandChild1);
+	
+	incomplChild1.add(new CategoryNode("incomplGrandChild2"));
+	assertExpectedPercent(parent, 2, 4);
+	assertExpectedPercent(incomplChild1, 1, 3);
+    }
+    
+    /**
+     * Test of add method, of class CategoryNode.
+     * Case: Check that adding a single great-grandchild to a (previously) 
+     * childless grandchild does not affect ancestors (since no new leaves are
+     * being added).
+     */
+    public void testAddPercentAddGreatGrandchildPropagateUp() throws Exception {
+	CategoryNode parent = new CategoryNode("parent");
+	
+	CategoryNode complChild = new CategoryNode("complChild");
+	complChild.complete();
+	CategoryNode incomplChild1 = new CategoryNode("incomplChild1");
+	
+	parent.add(complChild);
+	parent.add(incomplChild1);
+	
+	CategoryNode complGrandChild1 = new CategoryNode("complGrandChild1");
+	complGrandChild1.complete();
+	CategoryNode incomplGrandChild1 = new CategoryNode("incomplGrandChild1");
+	
+	incomplChild1.add(complGrandChild1);
+	incomplChild1.add(incomplGrandChild1);
+	
+	incomplGrandChild1.add(new CategoryNode("incomplGreatGrandChild"));
+	assertExpectedPercent(parent, 2, 3);
+	assertExpectedPercent(incomplChild1, 1, 2);
+    }
+    
+    /**
+     * Test of add method, of class CategoryNode.
+     * Case: Check that adding multiple great-grandchildren to a grandchild does 
+     * affect ancestors (since new leaves are being added).
+     */
+    public void testAddPercentAddMultGreatGrandchildPropagateUp() throws Exception {
+	CategoryNode parent = new CategoryNode("parent");
+	
+	CategoryNode complChild = new CategoryNode("complChild");
+	complChild.complete();
+	CategoryNode incomplChild1 = new CategoryNode("incomplChild1");
+	
+	parent.add(complChild);
+	parent.add(incomplChild1);
+	
+	CategoryNode complGrandChild1 = new CategoryNode("complGrandChild1");
+	complGrandChild1.complete();
+	CategoryNode incomplGrandChild1 = new CategoryNode("incomplGrandChild1");
+	
+	incomplChild1.add(complGrandChild1);
+	incomplChild1.add(incomplGrandChild1);
+	
+	incomplGrandChild1.add(new CategoryNode("incomplGreatGrandChild1"));
+	incomplGrandChild1.add(new CategoryNode("incomplGreatGrandChild2"));
+	assertExpectedPercent(parent, 2, 4);
+	assertExpectedPercent(incomplChild1, 1, 3);
+	assertExpectedPercent(incomplGrandChild1, 0, 2);
     }
 }
