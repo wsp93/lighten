@@ -98,7 +98,7 @@ public class CategoryNode {
 	}
 	
 	children.add(child);
-	child.setParent(this);
+	child.parent = this;
 	adjustPercentCompleteAdd();
     }
     
@@ -108,21 +108,14 @@ public class CategoryNode {
      * @param child The Node to be removed.
      */
     public void remove(CategoryNode child) {
-	if(child == null || child == this) {
-	    throw new IllegalArgumentException();
-	}
-	if(children.isEmpty()) {
-	    throw new NoSuchElementException();
-	}
+	checkConstraintsRemove(child);
 	
 	for(CategoryNode grandchild : child.children) {
 	    grandchild.parent = this;
 	    this.children.add(grandchild);
 	}
 	
-	children.remove(child);
-	child.parent = null;
-	adjustPercentCompleteRemove();
+	removeChildOnly(child);
     }
     
     /**
@@ -131,11 +124,8 @@ public class CategoryNode {
      * @param child The Node (and its descendents) to be removed.
      */
     public void removeSubtree(CategoryNode child) {
-	
-    }
-    
-    public void edit(String newName) {
-	
+	checkConstraintsRemove(child);
+	removeChildOnly(child);
     }
     
     public void complete() {
@@ -208,27 +198,34 @@ public class CategoryNode {
     /******************************************************************/
     
     public void setName(String name) {
-	
+	this.name = name;
     }
     
     public void setDeadline(LocalDateTime deadline) {
-	
+	this.deadline = deadline;
     }
     
     /******************************************************************/
     /*				PRIVATE HELPERS			      */
     /******************************************************************/
     
-    private void setParent(CategoryNode parent) {
-	this.parent = parent;
+    private void removeChildOnly(CategoryNode child) {
+	children.remove(child);
+	child.parent = null;
+	adjustPercentCompleteRemove();
+    }
+    
+    private void checkConstraintsRemove(CategoryNode child) {
+	if(child == null || child == this) {
+	    throw new IllegalArgumentException();
+	}
+	if(children.isEmpty()) {
+	    throw new NoSuchElementException();
+	}
     }
     
     private void setPercentComplete(int percent) {
 	assert(0 <= percentComplete && percentComplete <= 100);
-    }
-    
-    private void setCompletionDate(LocalDateTime completionDate) {
-	
     }
 
     private void adjustPercentCompleteAdd() {
