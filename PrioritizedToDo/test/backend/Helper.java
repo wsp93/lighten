@@ -33,4 +33,12 @@ public class Helper {
 		   parent, child.getParent());
     }
     
+    public static void assertExpectedPercent(CategoryNode node, int completeLeaves, 
+					int totalLeaves) throws Exception {
+	int expected = Converter.getPercentage(completeLeaves, totalLeaves);
+	int actual = node.getPercentComplete();
+	
+	assertEquals("percentComplete mismatch. Expected: " + expected + " Actual: " + actual, 
+		     actual, expected);
+    }
 }
