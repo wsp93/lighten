@@ -93,7 +93,7 @@ public class CategoryNode {
     /******************************************************************/
     
     public void add(CategoryNode child) {
-	if(child.getParent() != null) {
+	if(child.parent != null) {
 	    throw new IllegalArgumentException("This child already has a parent");
 	}
 	
@@ -129,11 +129,11 @@ public class CategoryNode {
     }
     
     public void complete() {
-	
+	throw new UnsupportedOperationException("Not supported yet.");
     }
     
     public void undoComplete() {
-	
+	throw new UnsupportedOperationException("Not supported yet.");
     }
     
     /******************************************************************/
