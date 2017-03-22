@@ -359,6 +359,7 @@ public class CategoryNodeTestAdd {
      * Case: Add a direct descendent to a partially complete Node;
      * only one descendent is marked complete.
      */
+    @Test
     public void testAddPercentPartialCompleteAddDirDesc() throws Exception {
 	CategoryNode root = new CategoryNode("root");
 	CategoryNode complChild = new CategoryNode("complChild");
@@ -379,6 +380,7 @@ public class CategoryNodeTestAdd {
      * Case: Add a single grandchild to a partially complete Node;
      * only one direct descendent of the root is marked complete.
      */
+    @Test
     public void testAddPercentPartialCompleteAddOneIndirDesc() throws Exception {
 	CategoryNode root = new CategoryNode("root");
 	CategoryNode complChild = new CategoryNode("complChild");
@@ -399,6 +401,7 @@ public class CategoryNodeTestAdd {
      * Case: Add more than one grandchild to a partially complete Node;
      * only one direct descendent of the root is marked complete.
      */
+    @Test
     public void testAddPercentPartialCompleteAddMultIndirDesc() throws Exception {
 	CategoryNode root = new CategoryNode("root");
 	CategoryNode complChild = new CategoryNode("complChild");
@@ -420,6 +423,7 @@ public class CategoryNodeTestAdd {
      * Case: Add a direct descendent to a partially complete Node;
      * more than one descendent is marked complete.
      */
+    @Test
     public void testAddPercentMultPartialCompleteAddDirDesc() throws Exception {
 	CategoryNode root = new CategoryNode("root");
 	CategoryNode complChild1 = new CategoryNode("complChild1");
@@ -442,6 +446,7 @@ public class CategoryNodeTestAdd {
      * Case: Add a single grandchild to a partially complete Node;
      * more than one direct descendent of the root is marked complete.
      */
+    @Test
     public void testAddPercentMultPartialCompleteAddOneIndirDesc() throws Exception {
 	CategoryNode root = new CategoryNode("root");
 	CategoryNode complChild1 = new CategoryNode("complChild1");
@@ -464,6 +469,7 @@ public class CategoryNodeTestAdd {
      * Case: Add more than one grandchild to a partially complete Node;
      * more than one direct descendent of the root is marked complete.
      */
+    @Test
     public void testAddPercentMultPartialCompleteAddMultIndirDesc() throws Exception {
 	CategoryNode root = new CategoryNode("root");
 	CategoryNode complChild1 = new CategoryNode("complChild1");
@@ -487,6 +493,7 @@ public class CategoryNodeTestAdd {
      * Case: Check that adding a grandchild propagates the changes up to
      * both the child and the parent.
      */
+    @Test
     public void testAddPercentAddGrandchildPropagateUp() throws Exception {
 	CategoryNode parent = new CategoryNode("parent");
 	
@@ -515,6 +522,7 @@ public class CategoryNodeTestAdd {
      * childless grandchild does not affect ancestors (since no new leaves are
      * being added).
      */
+    @Test
     public void testAddPercentAddGreatGrandchildPropagateUp() throws Exception {
 	CategoryNode parent = new CategoryNode("parent");
 	
@@ -542,6 +550,7 @@ public class CategoryNodeTestAdd {
      * Case: Check that adding multiple great-grandchildren to a grandchild does 
      * affect ancestors (since new leaves are being added).
      */
+    @Test
     public void testAddPercentAddMultGreatGrandchildPropagateUp() throws Exception {
 	CategoryNode parent = new CategoryNode("parent");
 	
