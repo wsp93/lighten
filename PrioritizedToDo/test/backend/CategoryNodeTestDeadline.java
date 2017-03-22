@@ -51,8 +51,8 @@ public class CategoryNodeTestDeadline {
      * Test of getTimeRemaining method, of class CategoryNode.
      * Case: No deadline.
      */
-    @Test(expected = Exception.class)
-    public void testGetTimeRemainingNoDeadline() {
+    @Test(expected = NullPointerException.class)
+    public void testGetTimeRemainingNoDeadline() throws Exception {
 	CategoryNode noDeadline = new CategoryNode("noDeadline");
 	noDeadline.setDeadline(null);
 	
@@ -63,8 +63,8 @@ public class CategoryNodeTestDeadline {
      * Test of getTimeRemaining method, of class CategoryNode.
      * Case: Deadline is beyond MAX_DEADLINE time away from now.
      */
-    @Test(expected = Exception.class)
-    public void testGetTimeRemainingDeadlineBeyondMax() {
+    @Test(expected = IllegalArgumentException.class)
+    public void testGetTimeRemainingDeadlineBeyondMax() throws Exception {
 	CategoryNode node = new CategoryNode("node");
 	node.setDeadline(LocalDateTime.now().plusYears(CategoryNode.MAX_DEADLINE)
 			.plusSeconds(1));
@@ -125,7 +125,7 @@ public class CategoryNodeTestDeadline {
      * Case: Deadline is now, and Node is marked as completed.
      */
     @Test
-    public void testGetTimeRemainingDeadlineNowComplete() {
+    public void testGetTimeRemainingDeadlineNowComplete() throws Exception {
 	CategoryNode node = new CategoryNode("node");
 	node.complete();
 	node.setDeadline(LocalDateTime.now());
@@ -141,7 +141,7 @@ public class CategoryNodeTestDeadline {
      * Case: Deadline is just ahead, and Node is marked as completed.
      */
     @Test
-    public void testGetTimeRemainingDeadlineJustAheadComplete() {
+    public void testGetTimeRemainingDeadlineJustAheadComplete() throws Exception {
 	CategoryNode node = new CategoryNode("node");
 	node.complete(); // need to set date complete again, to distinguish complete vs incomplete cases
 	node.setDeadline(LocalDateTime.now().plusSeconds(1));
@@ -153,7 +153,7 @@ public class CategoryNodeTestDeadline {
      * Case: Deadline is within 24 hours, and Node is marked as completed.
      */
     @Test
-    public void testGetTimeRemainingDeadlineWithinOneDayAwayComplete() {
+    public void testGetTimeRemainingDeadlineWithinOneDayAwayComplete() throws Exception {
 	CategoryNode node = new CategoryNode("node");
 	node.complete(); // need to set date complete again, to distinguish complete vs incomplete cases
 	node.setDeadline(LocalDateTime.now().plusHours(12));
@@ -165,7 +165,7 @@ public class CategoryNodeTestDeadline {
      * Case: Deadline is exactly 24 hours from now, and Node is marked as completed.
      */
     @Test
-    public void testGetTimeRemainingDeadlineOneDayAwayComplete() {
+    public void testGetTimeRemainingDeadlineOneDayAwayComplete() throws Exception {
 	CategoryNode node = new CategoryNode("node");
 	node.complete();  // need to set date complete again, to distinguish complete vs incomplete cases
 	node.setDeadline(LocalDateTime.now().plusHours(24));
@@ -178,7 +178,7 @@ public class CategoryNodeTestDeadline {
      * and Node is marked as completed.
      */
     @Test
-    public void testGetTimeRemainingDeadlineFutureComplete() {
+    public void testGetTimeRemainingDeadlineFutureComplete() throws Exception {
 	CategoryNode node = new CategoryNode("node");
 	node.complete();  // need to set date complete again, to distinguish complete vs incomplete cases
 	node.setDeadline(LocalDateTime.now().plusDays(10));
@@ -191,7 +191,7 @@ public class CategoryNodeTestDeadline {
      * completed.
      */
     @Test
-    public void testGetTimeRemainingDeadlineMaxComplete() {
+    public void testGetTimeRemainingDeadlineMaxComplete() throws Exception {
 	CategoryNode node = new CategoryNode("node");
 	node.complete();  // need to set date complete again, to distinguish complete vs incomplete cases
 	node.setDeadline(LocalDateTime.now().plusYears(CategoryNode.MAX_DEADLINE));
@@ -211,7 +211,7 @@ public class CategoryNodeTestDeadline {
      * Case: Deadline passed over 24 hours ago, and Node is marked as incomplete.
      */
     @Test
-    public void testGetTimeRemainingDeadlinePassedIncomplete() {
+    public void testGetTimeRemainingDeadlinePassedIncomplete() throws Exception {
 	CategoryNode node = new CategoryNode("node");
 	node.setDeadline(LocalDateTime.now().minusDays(10));
 	assertEquals(node.getTimeRemaining().getDays(), -10);
@@ -222,7 +222,7 @@ public class CategoryNodeTestDeadline {
      * Case: Deadline passed exactly 24 hours ago, and Node is marked as incomplete.
      */
     @Test
-    public void testGetTimeRemainingDeadlineOneDayPassedIncomplete() {
+    public void testGetTimeRemainingDeadlineOneDayPassedIncomplete() throws Exception {
 	CategoryNode node = new CategoryNode("node");
 	node.setDeadline(LocalDateTime.now().minusDays(1));
 	assertEquals(node.getTimeRemaining().getDays(), -1);
@@ -233,7 +233,7 @@ public class CategoryNodeTestDeadline {
      * Case: Deadline passed within 24 hours ago, and Node is marked as incomplete.
      */
     @Test
-    public void testGetTimeRemainingDeadlineWithinOneDayPassedIncomplete() {
+    public void testGetTimeRemainingDeadlineWithinOneDayPassedIncomplete() throws Exception {
 	CategoryNode node = new CategoryNode("node");
 	node.setDeadline(LocalDateTime.now().minusHours(12));
 	assertEquals(node.getTimeRemaining().getDays(), -1);
@@ -244,7 +244,7 @@ public class CategoryNodeTestDeadline {
      * Case: Deadline just passed, and Node is marked as incomplete.
      */
     @Test
-    public void testGetTimeRemainingDeadlineJustPassedIncomplete() {
+    public void testGetTimeRemainingDeadlineJustPassedIncomplete() throws Exception {
 	CategoryNode node = new CategoryNode("node");
 	node.setDeadline(LocalDateTime.now().minusSeconds(1));
 	assertEquals(node.getTimeRemaining().getDays(), -1);
@@ -259,7 +259,7 @@ public class CategoryNodeTestDeadline {
      * Case: Deadline is now, and Node is marked as incomplete.
      */
     @Test
-    public void testGetTimeRemainingDeadlineNowIncomplete() {
+    public void testGetTimeRemainingDeadlineNowIncomplete() throws Exception {
 	CategoryNode node = new CategoryNode("node");
 	node.setDeadline(LocalDateTime.now());
 	assertEquals(node.getTimeRemaining().getDays(), -1);
@@ -274,7 +274,7 @@ public class CategoryNodeTestDeadline {
      * Case: Deadline is just ahead, and Node is marked as incomplete.
      */
     @Test
-    public void testGetTimeRemainingDeadlineJustAheadIncomplete() {
+    public void testGetTimeRemainingDeadlineJustAheadIncomplete() throws Exception {
 	CategoryNode node = new CategoryNode("node");
 	node.setDeadline(LocalDateTime.now().plusSeconds(1));
 	assertEquals(node.getTimeRemaining().getDays(), 0);
@@ -285,7 +285,7 @@ public class CategoryNodeTestDeadline {
      * Case: Deadline is within 24 hours, and Node is marked as incomplete.
      */
     @Test
-    public void testGetTimeRemainingDeadlineWithinOneDayAwayIncomplete() {
+    public void testGetTimeRemainingDeadlineWithinOneDayAwayIncomplete() throws Exception {
 	CategoryNode node = new CategoryNode("node");
 	node.setDeadline(LocalDateTime.now().plusHours(12));
 	assertEquals(node.getTimeRemaining().getDays(), 0);
@@ -296,7 +296,7 @@ public class CategoryNodeTestDeadline {
      * Case: Deadline is exactly 24 hours from now, and Node is marked as incomplete.
      */
     @Test
-    public void testGetTimeRemainingDeadlineOneDayAwayIncomplete() {
+    public void testGetTimeRemainingDeadlineOneDayAwayIncomplete() throws Exception {
 	CategoryNode node = new CategoryNode("node");
 	node.setDeadline(LocalDateTime.now().plusDays(1));
 	assertEquals(node.getTimeRemaining().getDays(), 1);
@@ -308,7 +308,7 @@ public class CategoryNodeTestDeadline {
      * and Node is marked as incomplete.
      */
     @Test
-    public void testGetTimeRemainingDeadlineFutureIncomplete() {
+    public void testGetTimeRemainingDeadlineFutureIncomplete() throws Exception {
 	CategoryNode node = new CategoryNode("node");
 	node.setDeadline(LocalDateTime.now().plusDays(10));
 	assertEquals(node.getTimeRemaining().getDays(), 10);
@@ -320,7 +320,7 @@ public class CategoryNodeTestDeadline {
      * incomplete.
      */
     @Test
-    public void testGetTimeRemainingDeadlineMaxIncomplete() {
+    public void testGetTimeRemainingDeadlineMaxIncomplete() throws Exception {
 	CategoryNode node = new CategoryNode("node");
 	node.setDeadline(LocalDateTime.now().plusYears(CategoryNode.MAX_DEADLINE));
 	assertEquals(node.getTimeRemaining().getYears(), CategoryNode.MAX_DEADLINE);

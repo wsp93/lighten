@@ -9,8 +9,7 @@
 package backend;
 
 import java.time.LocalDateTime;
-import java.time.Period;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -70,13 +69,17 @@ public class CategoryNode {
     /*				 CONSTRUCTORS			      */
     /******************************************************************/
     
-    public CategoryNode(String name) {
+    public CategoryNode(String name) throws Exception {
 	this(name, null);
     }
     
-    public CategoryNode(String name, LocalDateTime deadline) {
+    public CategoryNode(String name, LocalDateTime deadline) throws Exception {
+	if(name == null) {
+	    throw new IllegalArgumentException("CategoryNode needs a Name");
+	}
+	
 	this.name = name;
-	children = new ArrayList();
+	children = new LinkedList(); // change if get() is called more often than add/remove
 	parent = null;
 	percentComplete = 0;
 	this.deadline = deadline;
@@ -88,7 +91,13 @@ public class CategoryNode {
     /******************************************************************/
     
     public void add(CategoryNode child) {
+	if(child.getParent() != null) {
+	    throw new IllegalArgumentException("This child already has a parent");
+	}
 	
+	children.add(child);
+	child.setParent(this);
+	// TO DO: change percentComplete accordingly
     }
     
     /**
@@ -195,11 +204,10 @@ public class CategoryNode {
     /******************************************************************/
     
     private void setParent(CategoryNode parent) {
-	
+	this.parent = parent;
     }
     
     private void setPercentComplete(int percent) {
-	
 	assert(0 <= percentComplete && percentComplete <= 100);
     }
     

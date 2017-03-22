@@ -7,6 +7,7 @@ package backend;
 
 import static backend.Helper.assertNoParentChildRelationship;
 import static backend.Helper.assertParentChildRelationship;
+import java.util.NoSuchElementException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -53,8 +54,8 @@ public class CategoryNodeTestRemoveSubtree {
      * Test of removeSubtree method, of class CategoryNode.
      * Case: Test removeSubtree() with input a null Node.
      */
-    @Test(expected = Exception.class)
-    public void testRemoveSubtreeInputNull() {
+    @Test(expected = IllegalArgumentException.class)
+    public void testRemoveSubtreeInputNull() throws Exception {
 	CategoryNode root = new CategoryNode("root");
 	root.removeSubtree(null);
     }
@@ -63,8 +64,8 @@ public class CategoryNodeTestRemoveSubtree {
      * Test of removeSubtree method, of class CategoryNode.
      * Case: Test removeSubtree() with input the Node itself.
      */
-    @Test(expected = Exception.class)
-    public void testRemoveSubtreeInputSelf() {
+    @Test(expected = IllegalArgumentException.class)
+    public void testRemoveSubtreeInputSelf() throws Exception {
 	CategoryNode root = new CategoryNode("root");
 	root.removeSubtree(root);
     }
@@ -74,8 +75,8 @@ public class CategoryNodeTestRemoveSubtree {
      * Case: Test removeSubtree() with input a Node that is not contained in the
      * list of children of the Node being removed from.
      */
-    @Test(expected = Exception.class)
-    public void testRemoveSubtreeInputNotFound() {
+    @Test
+    public void testRemoveSubtreeInputNotFound() throws Exception {
 	CategoryNode parent = new CategoryNode("parent");
 	CategoryNode child = new CategoryNode("child");
 	parent.add(child);
@@ -88,8 +89,8 @@ public class CategoryNodeTestRemoveSubtree {
      * Test of removeSubtree method, of class CategoryNode.
      * Case: Test removeSubtree() from a Node with empty child list.
      */
-    @Test(expected = Exception.class)
-    public void testRemoveSubtreeEmpty() {
+    @Test(expected = NoSuchElementException.class)
+    public void testRemoveSubtreeEmpty() throws Exception {
 	CategoryNode childless = new CategoryNode("childless");
 	CategoryNode unrelatedNode = new CategoryNode("unrelatedNode");
 	
@@ -101,7 +102,7 @@ public class CategoryNodeTestRemoveSubtree {
      * Case: Test removeSubtree() with output resulting in a Node with empty child list.
      */
     @Test
-    public void testRemoveSubtreeRelationshipOutputRoot() {
+    public void testRemoveSubtreeRelationshipOutputRoot() throws Exception {
 	CategoryNode root = new CategoryNode("root");
 	CategoryNode child = new CategoryNode("child");
 	root.add(child);
@@ -116,7 +117,7 @@ public class CategoryNodeTestRemoveSubtree {
      * first child in the list of children.
      */
     @Test
-    public void testRemoveSubtreeRelationshipInputInternalFirst() {
+    public void testRemoveSubtreeRelationshipInputInternalFirst() throws Exception {
 	CategoryNode parent = new CategoryNode("parent");
 	CategoryNode child1 = new CategoryNode("child1");
 	CategoryNode child2 = new CategoryNode("child2");
@@ -145,7 +146,7 @@ public class CategoryNodeTestRemoveSubtree {
      * middle child in the list of children.
      */
     @Test
-    public void testRemoveSubtreeRelationshipInputInternalMiddle() {
+    public void testRemoveSubtreeRelationshipInputInternalMiddle() throws Exception {
 	CategoryNode parent = new CategoryNode("parent");
 	CategoryNode child1 = new CategoryNode("child1");
 	CategoryNode child2 = new CategoryNode("child2");
@@ -174,7 +175,7 @@ public class CategoryNodeTestRemoveSubtree {
      * last child in the list of children.
      */
     @Test
-    public void testRemoveSubtreeRelationshipInputInternalLast() {
+    public void testRemoveSubtreeRelationshipInputInternalLast() throws Exception {
 	CategoryNode parent = new CategoryNode("parent");
 	CategoryNode child1 = new CategoryNode("child1");
 	CategoryNode child2 = new CategoryNode("child2");
@@ -202,7 +203,7 @@ public class CategoryNodeTestRemoveSubtree {
      * Case: Remove a leaf Node.
      */
     @Test
-    public void testRemoveSubtreeRelationshipInputLeaf() {
+    public void testRemoveSubtreeRelationshipInputLeaf() throws Exception {
 	CategoryNode parent = new CategoryNode("parent");
 	CategoryNode child1 = new CategoryNode("child1");
 	CategoryNode child2 = new CategoryNode("child2");
@@ -228,7 +229,7 @@ public class CategoryNodeTestRemoveSubtree {
      * name as, another Node that is in the list of children.
      */
     @Test
-    public void testRemoveSubtreeRelationshipDuplicateName() {
+    public void testRemoveSubtreeRelationshipDuplicateName() throws Exception {
 	CategoryNode parent = new CategoryNode("parent");
 	CategoryNode child1 = new CategoryNode("child");
 	CategoryNode child2 = new CategoryNode("child");

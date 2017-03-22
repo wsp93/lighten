@@ -60,8 +60,8 @@ public class CategoryNodeTestAdd {
      * Test of add method, of class CategoryNode.
      * Case: Test add() with input a null Node.
      */
-    @Test(expected = Exception.class)
-    public void testAddInputNull() {
+    @Test(expected = NullPointerException.class)
+    public void testAddInputNull() throws Exception {
 	CategoryNode parent = new CategoryNode("parent");
 	parent.add(null);
     }
@@ -70,8 +70,8 @@ public class CategoryNodeTestAdd {
      * Test of add method, of class CategoryNode.
      * Case: Test add() with input a Node with null name.
      */
-    @Test(expected = Exception.class)
-    public void testAddNullName() {
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddNullName() throws Exception {
 	CategoryNode parent = new CategoryNode("parent");
 	CategoryNode child = new CategoryNode(null);
 	parent.add(child);
@@ -83,7 +83,7 @@ public class CategoryNodeTestAdd {
      * single childless Node.
      */
     @Test
-    public void testAddRelationshipOutputRoot() {
+    public void testAddRelationshipOutputRoot() throws Exception {
 	CategoryNode root = new CategoryNode("root");
 	assertTrue("Root should have no children", root.numOfChildren() == 0);
 	assertEquals("Root should have no parent", null, root.getParent());
@@ -93,8 +93,8 @@ public class CategoryNodeTestAdd {
      * Test of add method, of class CategoryNode.
      * Case: Test add() with input the Internal Node of another Tree.
      */
-    @Test(expected = Exception.class)
-    public void testAddInputInternal() {
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddInputInternal() throws Exception {
 	CategoryNode root1 = new CategoryNode("root1");
 	
 	CategoryNode root2 = new CategoryNode("root2");
@@ -110,8 +110,8 @@ public class CategoryNodeTestAdd {
      * Test of add method, of class CategoryNode.
      * Case: Test add() with input the Leaf Node of another Tree.
      */
-    @Test(expected = Exception.class)
-    public void testAddInputLeaf() {
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddInputLeaf() throws Exception {
 	CategoryNode root1 = new CategoryNode("root1");
 	
 	CategoryNode root2 = new CategoryNode("root2");
@@ -131,7 +131,7 @@ public class CategoryNodeTestAdd {
      * has zero children.
      */
     @Test
-    public void testAddRelationshipZeroChildren() {
+    public void testAddRelationshipZeroChildren() throws Exception {
 	CategoryNode parent = new CategoryNode("parent");
 	CategoryNode child = new CategoryNode("child");
 	
@@ -146,7 +146,7 @@ public class CategoryNodeTestAdd {
      * has 1 child.
      */
     @Test
-    public void testAddRelationshipOneChild() {
+    public void testAddRelationshipOneChild() throws Exception {
 	CategoryNode parent = new CategoryNode("parent");
 	CategoryNode child = new CategoryNode("child");
 	parent.add(child);
@@ -164,7 +164,7 @@ public class CategoryNodeTestAdd {
      * has multiple children.
      */
     @Test
-    public void testAddRelationshipMultipleChildren() {
+    public void testAddRelationshipMultipleChildren() throws Exception {
 	CategoryNode parent = new CategoryNode("parent");
 	CategoryNode child1 = new CategoryNode("child1");
 	CategoryNode child2 = new CategoryNode("child2");
@@ -190,7 +190,7 @@ public class CategoryNodeTestAdd {
      * of a Node's list of children.
      */
     @Test
-    public void testAddRelationshipToFirstChild() {
+    public void testAddRelationshipToFirstChild() throws Exception {
 	CategoryNode parent = new CategoryNode("parent");
 	CategoryNode child1 = new CategoryNode("child1");
 	CategoryNode child2 = new CategoryNode("child2");
@@ -215,7 +215,7 @@ public class CategoryNodeTestAdd {
      * children in a Node's list of children.
      */
     @Test
-    public void testAddRelationshipToMiddleChild() {
+    public void testAddRelationshipToMiddleChild() throws Exception {
 	CategoryNode parent = new CategoryNode("parent");
 	CategoryNode child1 = new CategoryNode("child1");
 	CategoryNode child2 = new CategoryNode("child2");
@@ -240,7 +240,7 @@ public class CategoryNodeTestAdd {
      * of a Node's list of children.
      */
     @Test
-    public void testAddRelationshipToLastChild() {
+    public void testAddRelationshipToLastChild() throws Exception {
 	CategoryNode parent = new CategoryNode("parent");
 	CategoryNode child1 = new CategoryNode("child1");
 	CategoryNode child2 = new CategoryNode("child2");
@@ -268,8 +268,8 @@ public class CategoryNodeTestAdd {
      * Case: Test for add(), with input a Node that is already in the list
      * of children.
      */
-    @Test(expected = Exception.class)
-    public void testAddDuplicateNode() {
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddDuplicateNode() throws Exception {
 	CategoryNode root = new CategoryNode("root");
 	CategoryNode child = new CategoryNode("child");
 	
@@ -284,7 +284,7 @@ public class CategoryNodeTestAdd {
      * of children.
      */
     @Test
-    public void testAddRelationshipDuplicateName() {
+    public void testAddRelationshipDuplicateName() throws Exception {
 	CategoryNode parent = new CategoryNode("parent");
 	CategoryNode child1 = new CategoryNode("child");
 	CategoryNode child2 = new CategoryNode("child");
@@ -306,7 +306,7 @@ public class CategoryNodeTestAdd {
      * single childless Node.
      */
     @Test
-    public void testAddPercentOutputRoot() {
+    public void testAddPercentOutputRoot() throws Exception {
 	CategoryNode root = new CategoryNode("root");
 	assertTrue("Root just added; should be 0% complete", root.getPercentComplete() == 0);
     }
