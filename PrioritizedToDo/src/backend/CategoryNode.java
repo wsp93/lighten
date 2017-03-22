@@ -64,18 +64,23 @@ public class CategoryNode {
     private int percentComplete; // use whole-number percentages // TODO: double?
     private LocalDateTime deadline;
     private LocalDateTime completionDate;
-    private int deadlineChangesCtr; // count # of times deadline has changed
+    //private int deadlineChangesCtr; // count # of times deadline has changed
     
     /******************************************************************/
     /*				 CONSTRUCTORS			      */
     /******************************************************************/
     
     public CategoryNode(String name) {
-	
+	this(name, null);
     }
     
     public CategoryNode(String name, LocalDateTime deadline) {
+	this.name = name;
 	children = new ArrayList();
+	parent = null;
+	percentComplete = 0;
+	this.deadline = deadline;
+	completionDate = null;
     }
     
     /******************************************************************/
