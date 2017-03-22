@@ -71,11 +71,11 @@ public class CategoryNode {
     /*				 CONSTRUCTORS			      */
     /******************************************************************/
     
-    public CategoryNode(String name) throws Exception {
+    public CategoryNode(String name) throws IllegalArgumentException {
 	this(name, null);
     }
     
-    public CategoryNode(String name, LocalDateTime deadline) throws Exception {
+    public CategoryNode(String name, LocalDateTime deadline) throws IllegalArgumentException {
 	if(name == null) {
 	    throw new IllegalArgumentException("CategoryNode needs a Name");
 	}
