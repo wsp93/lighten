@@ -147,7 +147,7 @@ public class CategoryNode {
      * overdue, or the amount of time remaining.
      */
     public PeriodDuration getTimeRemaining() {
-	return null;
+	throw new UnsupportedOperationException("Not supported yet.");
     }
     
     public boolean hasDeadline() {
@@ -177,8 +177,7 @@ public class CategoryNode {
     public int getPercentComplete() {
 	// BEWARE DIVIDE BY 0
 	assert(0 <= percentComplete && percentComplete <= 100);
-	
-	return -1;
+	throw new UnsupportedOperationException("Not supported yet.");
     }
     
     public boolean isComplete() {
@@ -226,6 +225,7 @@ public class CategoryNode {
     
     private void setPercentComplete(int percent) {
 	assert(0 <= percentComplete && percentComplete <= 100);
+	throw new UnsupportedOperationException("Not supported yet.");
     }
 
     private void adjustPercentCompleteAdd() {
