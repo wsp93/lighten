@@ -128,6 +128,12 @@ public class CategoryNode {
 	removeChildOnly(child);
     }
     
+    /*********************************************************************/
+    /* TO DO:								 */
+    /*									 */
+    /* Consider the case when you have completed all tasks.		 */
+    /*********************************************************************/
+    
     public void complete() {
 	throw new UnsupportedOperationException("Not supported yet.");
     }
