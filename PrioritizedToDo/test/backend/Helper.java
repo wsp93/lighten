@@ -33,7 +33,7 @@ public class Helper {
 		   parent, child.getParent());
     }
     
-    public static void assertExpectedPercent(int expected, int actual) throws Exception {
+    public static void assertExpectedPercent(int expected, int actual) {
 	
 	assertEquals("percentComplete mismatch. Expected: " + expected + " Actual: " + actual, 
 		     actual, expected);
