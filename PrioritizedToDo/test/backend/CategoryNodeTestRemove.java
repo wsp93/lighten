@@ -80,6 +80,9 @@ public class CategoryNodeTestRemove {
 	
 	CategoryNode cousin = new CategoryNode("cousin");
 	parent.remove(cousin);
+	
+	assertNotNull(cousin);
+	assertEquals(parent.numOfChildren(), 1);
     }
     
     /**
