@@ -1,5 +1,6 @@
 package backend;
 
+import static backend.Helper.assertExpectedPercent;
 import static backend.Helper.assertNoParentChildRelationship;
 import static backend.Helper.assertParentChildRelationship;
 import java.util.NoSuchElementException;
@@ -243,4 +244,283 @@ public class CategoryNodeTestRemove {
     /*		   Remove: PERCENT COMPLETE CONSISTENCY TESTS	      */
     /******************************************************************/
 
+    /**
+     * Test of remove method, of class CategoryNode.
+     * Case: Remove from a Node that has only one (incomplete) child.
+     */
+    @Test
+    public void testRemovePercentOne() throws Exception {
+	CategoryNode parent = new CategoryNode("parent");
+	CategoryNode child1 = new CategoryNode("child");
+	parent.add(child1);
+	
+	parent.remove(child1);
+	
+	assertExpectedPercent(parent, 0, 1); // 0 complete leaves, 1 total leaf
+    }
+    
+    /**
+     * Test of remove method, of class CategoryNode.
+     * Case: Remove from a Node that has multiple children. The Node to be
+     * removed is marked complete, and is a direct descendent. The result is
+     * a partially complete parent.
+     */
+    @Test
+    public void testRemovePercentInComplDirDescOutPartiallyComplete() throws Exception {
+	CategoryNode parent = new CategoryNode("parent");
+	CategoryNode complChild1 = new CategoryNode("complChild1");
+	complChild1.complete();
+	CategoryNode complChild2 = new CategoryNode("complChild2");
+	complChild2.complete();
+	CategoryNode incomplChild = new CategoryNode("incomplChild");
+	
+	parent.add(complChild1);
+	parent.add(complChild2);
+	parent.add(incomplChild);
+	
+	parent.remove(complChild1);
+	
+	assertExpectedPercent(parent, 1, 2);
+    }
+    
+    
+    /*********************************************************************/
+    /* Note:								 */
+    /* Started using test naming convention here, as these test names are*/
+    /* starting to get ridiculous... will need to refactor earlier tests.*/
+    /*									 */
+    /* [UnitOfWork__StateUnderTest__ExpectedBehavior]			 */
+    /*********************************************************************/
+    
+    /**
+     * Test of remove method, of class CategoryNode.
+     * Case: Remove from a Node that has multiple children. The Node to be
+     * removed is incomplete, and is a direct descendent. The result is
+     * a partially complete parent.
+     */
+    @Test
+    public void removePercent_IncompleteDirectDescendent_PartiallyCompleteParent() throws Exception {
+	CategoryNode parent = new CategoryNode("parent");
+	CategoryNode complChild1 = new CategoryNode("complChild1");
+	complChild1.complete();
+	CategoryNode incomplChild1 = new CategoryNode("incomplChild1");
+	CategoryNode incomplChild2 = new CategoryNode("incomplChild2");
+	
+	parent.add(complChild1);
+	parent.add(incomplChild1);
+	parent.add(incomplChild2);
+	
+	parent.remove(incomplChild1);
+	
+	assertExpectedPercent(parent, 1, 2);
+    }
+    
+    /**
+     * Test of remove method, of class CategoryNode.
+     * Case: Remove from a Node that has multiple children. The Node to be
+     * removed is incomplete, and is a direct descendent. The result is
+     * a fully complete parent.
+     */
+    @Test
+    public void removePercent_IncompleteDirectDescendent_CompleteParent() throws Exception {
+	CategoryNode parent = new CategoryNode("parent");
+	CategoryNode complChild1 = new CategoryNode("complChild1");
+	complChild1.complete();
+	CategoryNode complChild2 = new CategoryNode("complChild2");
+	complChild2.complete();
+	CategoryNode incomplChild = new CategoryNode("incomplChild");
+	
+	parent.add(complChild1);
+	parent.add(complChild2);
+	parent.add(incomplChild);
+	
+	parent.remove(incomplChild);
+	
+	assertExpectedPercent(parent, 2, 2);
+    }
+    
+    /**
+     * Test of remove method, of class CategoryNode.
+     * Case: Remove from a Node that has multiple children. The Node to be
+     * removed is complete, and is a direct descendent. The result is
+     * a 0% complete parent.
+     */
+    @Test
+    public void removePercent_CompleteDirectDescendent_IncompleteParent() throws Exception {
+	CategoryNode parent = new CategoryNode("parent");
+	CategoryNode complChild1 = new CategoryNode("complChild1");
+	complChild1.complete();
+	CategoryNode incomplChild = new CategoryNode("incomplChild");
+	
+	parent.add(complChild1);
+	parent.add(incomplChild);
+	
+	parent.remove(complChild1);
+	
+	assertExpectedPercent(parent, 0, 1);
+    }
+    
+    /**
+     * Test of remove method, of class CategoryNode.
+     * Case: Remove an internal Node. The result is a 0% complete parent.
+     */
+    @Test
+    public void removePercent_Internal_IncompleteParent() throws Exception {
+	CategoryNode parent = new CategoryNode("parent");
+	CategoryNode internal = new CategoryNode("internal");
+	CategoryNode child = new CategoryNode("child");
+	
+	parent.add(internal);
+	parent.add(child);
+	
+	CategoryNode internalChild1 = new CategoryNode("internalChild1");
+	CategoryNode internalChild2 = new CategoryNode("internalChild2");
+	
+	internal.add(internalChild1);
+	internal.add(internalChild2);
+	
+	parent.remove(internal);
+	assertExpectedPercent(parent, 0, 3);
+    }
+    
+    /**
+     * Test of remove method, of class CategoryNode.
+     * Case: Remove an internal Node. The result is a partially complete parent.
+     */
+    @Test
+    public void removePercent_Internal_PartiallyCompleteParent() throws Exception {
+	CategoryNode parent = new CategoryNode("parent");
+	CategoryNode internal = new CategoryNode("internal");
+	CategoryNode child = new CategoryNode("child");
+	
+	parent.add(internal);
+	parent.add(child);
+	
+	CategoryNode internalChild1 = new CategoryNode("internalChild1");
+	internalChild1.complete();
+	CategoryNode internalChild2 = new CategoryNode("internalChild2");
+	
+	internal.add(internalChild1);
+	internal.add(internalChild2);
+	
+	parent.remove(internal);
+	assertExpectedPercent(parent, 1, 3);
+    }
+    
+    /**
+     * Test of remove method, of class CategoryNode.
+     * Case:
+     * BEFORE: Root at 50% completion, Internal Node at 66%.
+     * DURING: Remove one of Internal's complete children.
+     * AFTER: Root at 33%, Internal at 50%.
+     */
+    @Test
+    public void removePercent_RemoveComplete_PropagateUp() throws Exception {
+	CategoryNode root = new CategoryNode("root");
+	CategoryNode internal = new CategoryNode("internal");
+	CategoryNode rootChild = new CategoryNode("rootChild");
+	
+	root.add(internal);
+	root.add(rootChild);
+	
+	CategoryNode internalChildComplete1 = new CategoryNode("i1");
+	internalChildComplete1.complete();
+	CategoryNode internalChildComplete2 = new CategoryNode("i2");
+	internalChildComplete2.complete();
+	CategoryNode internalChildIncomplete = new CategoryNode("i3");
+	
+	internal.add(internalChildComplete1);
+	internal.add(internalChildComplete2);
+	internal.add(internalChildIncomplete);
+	
+	internal.remove(internalChildComplete1);
+	assertExpectedPercent(internal, 1, 2);
+	assertExpectedPercent(root, 1, 3);
+    }
+    
+    /**
+     * Test of remove method, of class CategoryNode.
+     * Case:
+     * BEFORE: Root at 25% completion, Internal Node at 33%.
+     * DURING: Remove one of Internal's incomplete children.
+     * AFTER: Root at 33%, Internal at 50%.
+     */
+    @Test
+    public void removePercent_RemoveIncomplete_PropagateUp() throws Exception {
+	CategoryNode root = new CategoryNode("root");
+	CategoryNode internal = new CategoryNode("internal");
+	CategoryNode rootChild = new CategoryNode("rootChild");
+	
+	root.add(internal);
+	root.add(rootChild);
+	
+	CategoryNode internalChildComplete1 = new CategoryNode("i1");
+	internalChildComplete1.complete();
+	CategoryNode incomplete = new CategoryNode("incomplete");
+	CategoryNode i3 = new CategoryNode("i3");
+	
+	internal.add(internalChildComplete1);
+	internal.add(incomplete);
+	internal.add(i3);
+	
+	internal.remove(incomplete);
+	assertExpectedPercent(internal, 1, 2);
+	assertExpectedPercent(root, 1, 3);
+    }
+    
+    /**
+     * Test of remove method, of class CategoryNode.
+     * Case:
+     * BEFORE: Root at 33% completion, Internal Node at 50%.
+     * DURING: Remove Internal's only incomplete child.
+     * AFTER: Root at 50%, Internal at 100%.
+     */
+    @Test
+    public void removePercent_RemoveIncomplete_PropagateUpInternalComplete() throws Exception {
+	CategoryNode root = new CategoryNode("root");
+	CategoryNode internal = new CategoryNode("internal");
+	CategoryNode rootChild = new CategoryNode("rootChild");
+	
+	root.add(internal);
+	root.add(rootChild);
+	
+	CategoryNode complete = new CategoryNode("complete");
+	complete.complete();
+	CategoryNode incomplete = new CategoryNode("incomplete");
+	
+	internal.add(complete);
+	internal.add(incomplete);
+	
+	internal.remove(incomplete);
+	assertExpectedPercent(internal, 1, 1);
+	assertExpectedPercent(root, 1, 2);
+    }
+    
+    /**
+     * Test of remove method, of class CategoryNode.
+     * Case:
+     * BEFORE: Root at 33% completion, Internal Node at 50%.
+     * DURING: Remove Internal's only complete child.
+     * AFTER: Root at 0%, Internal at 0%.
+     */
+    @Test
+    public void removePercent_RemoveComplete_PropagateUpIncomplete() throws Exception {
+	CategoryNode root = new CategoryNode("root");
+	CategoryNode internal = new CategoryNode("internal");
+	CategoryNode rootChild = new CategoryNode("rootChild");
+	
+	root.add(internal);
+	root.add(rootChild);
+	
+	CategoryNode complete = new CategoryNode("complete");
+	complete.complete();
+	CategoryNode incomplete = new CategoryNode("incomplete");
+	
+	internal.add(complete);
+	internal.add(incomplete);
+	
+	internal.remove(complete);
+	assertExpectedPercent(internal, 0, 1);
+	assertExpectedPercent(root, 0, 2);
+    }
 }
