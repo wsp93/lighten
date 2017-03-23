@@ -372,7 +372,7 @@ public class CategoryNodeTestAdd {
 	root.add(incomplChild2);
 	
 	root.add(new CategoryNode("incomplChild3"));
-	assertExpectedPercent(root, 1, 4); // 1 complete leaf, 4 total leaves
+	assertExpectedPercent(25, root.getPercentComplete());
     }
     
     /**
@@ -393,7 +393,7 @@ public class CategoryNodeTestAdd {
 	root.add(incomplChild2);
 	
 	incomplChild1.add(new CategoryNode("incomplGrandchild"));
-	assertExpectedPercent(root, 1, 3);
+	assertExpectedPercent(33, root.getPercentComplete());
     }
     
     /**
@@ -415,7 +415,7 @@ public class CategoryNodeTestAdd {
 	
 	incomplChild1.add(new CategoryNode("incomplGrandchild1"));
 	incomplChild1.add(new CategoryNode("incomplGrandchild2"));
-	assertExpectedPercent(root, 1, 4);
+	assertExpectedPercent(25, root.getPercentComplete());
     }
     
     /**
@@ -438,7 +438,7 @@ public class CategoryNodeTestAdd {
 	root.add(incomplChild1);
 	
 	root.add(new CategoryNode("incomplChild2"));
-	assertExpectedPercent(root, 2, 4);
+	assertExpectedPercent(50, root.getPercentComplete());
     }
     
     /**
@@ -461,7 +461,7 @@ public class CategoryNodeTestAdd {
 	root.add(incomplChild1);
 	
 	incomplChild1.add(new CategoryNode("incomplGrandchild"));
-	assertExpectedPercent(root, 2, 3);
+	assertExpectedPercent(66, root.getPercentComplete());
     }
     
     /**
@@ -485,7 +485,7 @@ public class CategoryNodeTestAdd {
 	
 	incomplChild1.add(new CategoryNode("incomplGrandchild1"));
 	incomplChild1.add(new CategoryNode("incomplGrandchild2"));
-	assertExpectedPercent(root, 2, 4);
+	assertExpectedPercent(50, root.getPercentComplete());
     }
     
     /**
@@ -512,8 +512,8 @@ public class CategoryNodeTestAdd {
 	incomplChild1.add(incomplGrandChild1);
 	
 	incomplChild1.add(new CategoryNode("incomplGrandChild2"));
-	assertExpectedPercent(parent, 2, 4);
-	assertExpectedPercent(incomplChild1, 1, 3);
+	assertExpectedPercent(50, parent.getPercentComplete());
+	assertExpectedPercent(33, incomplChild1.getPercentComplete());
     }
     
     /**
@@ -541,8 +541,8 @@ public class CategoryNodeTestAdd {
 	incomplChild1.add(incomplGrandChild1);
 	
 	incomplGrandChild1.add(new CategoryNode("incomplGreatGrandChild"));
-	assertExpectedPercent(parent, 2, 3);
-	assertExpectedPercent(incomplChild1, 1, 2);
+	assertExpectedPercent(66, parent.getPercentComplete());
+	assertExpectedPercent(50, incomplChild1.getPercentComplete());
     }
     
     /**
@@ -570,8 +570,8 @@ public class CategoryNodeTestAdd {
 	
 	incomplGrandChild1.add(new CategoryNode("incomplGreatGrandChild1"));
 	incomplGrandChild1.add(new CategoryNode("incomplGreatGrandChild2"));
-	assertExpectedPercent(parent, 2, 4);
-	assertExpectedPercent(incomplChild1, 1, 3);
-	assertExpectedPercent(incomplGrandChild1, 0, 2);
+	assertExpectedPercent(50, parent.getPercentComplete());
+	assertExpectedPercent(33, incomplChild1.getPercentComplete());
+	assertExpectedPercent(0, incomplGrandChild1.getPercentComplete());
     }
 }

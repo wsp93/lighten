@@ -269,7 +269,7 @@ public class CategoryNodeTestRemoveSubtree {
 	
 	parent.removeSubtree(child1);
 	
-	assertExpectedPercent(parent, 0, 1); // 0 complete leaves, 1 total leaf
+	assertExpectedPercent(0, parent.getPercentComplete());
     }
     
     /**
@@ -295,7 +295,7 @@ public class CategoryNodeTestRemoveSubtree {
 	
 	parent.removeSubtree(complChild1);
 	
-	assertExpectedPercent(parent, 1, 2);
+	assertExpectedPercent(50, parent.getPercentComplete());
     }
     
     /**
@@ -320,7 +320,7 @@ public class CategoryNodeTestRemoveSubtree {
 	
 	parent.removeSubtree(incomplChild1);
 	
-	assertExpectedPercent(parent, 1, 2);
+	assertExpectedPercent(50, parent.getPercentComplete());
     }
     
     /**
@@ -345,7 +345,7 @@ public class CategoryNodeTestRemoveSubtree {
 	
 	parent.removeSubtree(incomplChild);
 	
-	assertExpectedPercent(parent, 2, 2);
+	assertExpectedPercent(100, parent.getPercentComplete());
     }
     
     /**
@@ -367,7 +367,7 @@ public class CategoryNodeTestRemoveSubtree {
 	
 	parent.removeSubtree(complChild1);
 	
-	assertExpectedPercent(parent, 0, 1);
+	assertExpectedPercent(0, parent.getPercentComplete());
     }
     
     /**
@@ -394,7 +394,7 @@ public class CategoryNodeTestRemoveSubtree {
 	internal.add(internalChild2);
 	
 	parent.removeSubtree(internal);
-	assertExpectedPercent(parent, 0, 1);
+	assertExpectedPercent(0, parent.getPercentComplete());
     }
     
     /**
@@ -427,7 +427,7 @@ public class CategoryNodeTestRemoveSubtree {
 	internal.add(internalChild2);
 	
 	parent.removeSubtree(internal);
-	assertExpectedPercent(parent, 1, 3);
+	assertExpectedPercent(33, parent.getPercentComplete());
     }
     
     /**
@@ -455,7 +455,7 @@ public class CategoryNodeTestRemoveSubtree {
 	internal.add(internalChild2);
 	
 	parent.removeSubtree(internal);
-	assertExpectedPercent(parent, 1, 1);
+	assertExpectedPercent(100, parent.getPercentComplete());
     }
     
     /**
@@ -485,8 +485,8 @@ public class CategoryNodeTestRemoveSubtree {
 	internal.add(internalChildIncomplete);
 	
 	internal.removeSubtree(internalChildComplete1);
-	assertExpectedPercent(internal, 1, 2);
-	assertExpectedPercent(root, 1, 3);
+	assertExpectedPercent(50, internal.getPercentComplete());
+	assertExpectedPercent(33, root.getPercentComplete());
     }
     
     /**
@@ -515,8 +515,8 @@ public class CategoryNodeTestRemoveSubtree {
 	internal.add(i3);
 	
 	internal.removeSubtree(incomplete);
-	assertExpectedPercent(internal, 1, 2);
-	assertExpectedPercent(root, 1, 3);
+	assertExpectedPercent(50, internal.getPercentComplete());
+	assertExpectedPercent(33, root.getPercentComplete());
     }
     
     /**
@@ -543,8 +543,8 @@ public class CategoryNodeTestRemoveSubtree {
 	internal.add(incomplete);
 	
 	internal.removeSubtree(incomplete);
-	assertExpectedPercent(internal, 1, 1);
-	assertExpectedPercent(root, 1, 2);
+	assertExpectedPercent(100, internal.getPercentComplete());
+	assertExpectedPercent(50, root.getPercentComplete());
     }
     
     /**
@@ -571,7 +571,7 @@ public class CategoryNodeTestRemoveSubtree {
 	internal.add(incomplete);
 	
 	internal.removeSubtree(complete);
-	assertExpectedPercent(internal, 0, 1);
-	assertExpectedPercent(root, 0, 2);
+	assertExpectedPercent(0, internal.getPercentComplete());
+	assertExpectedPercent(0, root.getPercentComplete());
     }
 }
