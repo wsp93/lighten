@@ -247,13 +247,6 @@ public class CategoryNodeTestRemoveSubtree {
     /*	      Remove Subtree: PERCENT COMPLETE CONSISTENCY TESTS      */
     /******************************************************************/
     
-    /*********************************************************************/
-    /* Note:								 */
-    /* Tests should be exactly the same as for remove(), except for the  */
-    /* internal Node cases. Code should reflect this after refacotring.  */
-    /* Note also to use removeSubtree() instead of just remove().	 */
-    /*********************************************************************/
-    
     /**
      * Test of removeSubtree method, of class CategoryNode.
      * Case:
