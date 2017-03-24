@@ -318,7 +318,7 @@ public class CategoryNodeTestAdd {
      * incomplete Node.
      */
     @Test
-    public void testAddPercentOneIncomplete() {
+    public void testAddPercentOneIncomplete() throws Exception {
 	CategoryNode root = new CategoryNode("root");
 	CategoryNode child = new CategoryNode("child");
 	root.add(child);
@@ -333,7 +333,7 @@ public class CategoryNodeTestAdd {
      * Node. Should return the percentComplete of that Node, NOT div by 0.
      */
     @Test
-    public void testAddPercentAttemptDivByZero() {
+    public void testAddPercentAttemptDivByZero() throws Exception {
 	CategoryNode root = new CategoryNode("root");
 	CategoryNode child = new CategoryNode("child");
 	root.add(child);

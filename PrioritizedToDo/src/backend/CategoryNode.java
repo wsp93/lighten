@@ -33,8 +33,6 @@ public class CategoryNode {
     //				   TO DO			      //
     ////////////////////////////////////////////////////////////////////
     //								      //
-    // -Implement add()'s percentComplete logic			      //
-    // -Should percentComplete be a double?			      //
     // -Data should be persistent. Use a DB.			      //
     // -Nodes sortable by deadline/% complete/both (group by)	      //
     // -Add IDs for each node? (Be careful of overflow)		      //
@@ -62,7 +60,7 @@ public class CategoryNode {
     private String name;
     private List<CategoryNode> children; // represents sub-categories
     private CategoryNode parent; // super-category
-    private int percentComplete; // use whole-number percentages // TODO: double?
+    private boolean isComplete;
     private LocalDateTime deadline;
     private LocalDateTime completionDate;
     //private int deadlineChangesCtr; // count # of times deadline has changed
@@ -83,7 +81,7 @@ public class CategoryNode {
 	this.name = name;
 	children = new LinkedList(); // change if get() is called more often than add/remove
 	parent = null;
-	percentComplete = 0;
+	isComplete = false;
 	this.deadline = deadline;
 	completionDate = null;
     }
@@ -93,13 +91,9 @@ public class CategoryNode {
     /******************************************************************/
     
     public void add(CategoryNode child) {
-	if(child.parent != null) {
-	    throw new IllegalArgumentException("This child already has a parent");
-	}
-	
+	checkConstraintsAdd(child);
 	children.add(child);
 	child.parent = this;
-	adjustPercentCompleteAdd();
     }
     
     /**
@@ -135,7 +129,7 @@ public class CategoryNode {
     /*********************************************************************/
     
     public void complete() {
-	throw new UnsupportedOperationException("Not supported yet.");
+	setDescendentsComplete(this);
     }
     
     public void undoComplete() {
@@ -180,14 +174,15 @@ public class CategoryNode {
 	return this.parent;
     }
     
-    public int getPercentComplete() {
-	// BEWARE DIVIDE BY 0
-	assert(0 <= percentComplete && percentComplete <= 100);
-	throw new UnsupportedOperationException("Not supported yet.");
+    public int getPercentComplete() throws Exception {
+	int completeLeaves = getCompleteLeaves(this);
+	int totalLeaves = getTotalLeaves(this);
+	
+	return Converter.getPercentage(completeLeaves, totalLeaves);
     }
     
     public boolean isComplete() {
-	return percentComplete == 100;
+	return isComplete;
     }
     
     public LocalDateTime getDeadline() {
@@ -214,31 +209,78 @@ public class CategoryNode {
     /*				PRIVATE HELPERS			      */
     /******************************************************************/
     
+    // find the total number of leaf nodes that descend from this node.
+    private int getTotalLeaves(CategoryNode root) {
+	if(root != null) {
+	    if(root.children.isEmpty()) {
+		return 1;
+	    } else { // total leaves = sum of each child's # of leaves
+		int sum = 0;
+		
+		for(CategoryNode child : root.children) {
+		    sum += getTotalLeaves(child);
+		}
+		
+		return sum;
+	    }
+	}
+	
+	return 0;
+    }
+    
+    // find the number of Complete leaf nodes that descend from this node.
+    private int getCompleteLeaves(CategoryNode root) {
+	if(root != null) {
+	    if(root.children.isEmpty()) {
+		if(root.isComplete) return 1;
+		else return 0;
+	    } else {
+		int sum = 0;
+		
+		for(CategoryNode child : root.children) {
+		    sum += getCompleteLeaves(child);
+		}
+		
+		return sum;
+	    }
+	}
+	
+	return 0;
+    }
+    
     private void removeChildOnly(CategoryNode child) {
 	children.remove(child);
 	child.parent = null;
-	adjustPercentCompleteRemove();
     }
     
     private void checkConstraintsRemove(CategoryNode child) {
-	if(child == null || child == this) {
-	    throw new IllegalArgumentException();
+	if(child == null) {
+	    throw new IllegalArgumentException("Child is null");
+	}
+	if(child == this) {
+	    throw new IllegalArgumentException("Cannot remove self");
 	}
 	if(children.isEmpty()) {
-	    throw new NoSuchElementException();
+	    throw new NoSuchElementException("Removing from a childless Node");
 	}
     }
     
-    private void setPercentComplete(int percent) {
-	assert(0 <= percentComplete && percentComplete <= 100);
-	throw new UnsupportedOperationException("Not supported yet.");
+    private void setDescendentsComplete(CategoryNode root) {
+	if(root != null) {
+	    root.isComplete = true;
+	    
+	    for(CategoryNode child : root.children) {
+		setDescendentsComplete(child);
+	    }
+	}
     }
 
-    private void adjustPercentCompleteAdd() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private void adjustPercentCompleteRemove() {
-	throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void checkConstraintsAdd(CategoryNode child) {
+	if(child.parent != null) {
+	    throw new IllegalArgumentException("This child already has a parent");
+	}
+	if(isComplete) {
+	    throw new IllegalArgumentException("This Node is already complete");
+	}
     }
 }

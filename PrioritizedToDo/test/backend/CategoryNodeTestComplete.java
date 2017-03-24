@@ -89,7 +89,7 @@ public class CategoryNodeTestComplete {
      * AFTER: Root is complete.
      */
     @Test
-    public void completeOneNode_SetComplete_CompleteNode() {
+    public void completeOneNode_SetComplete_CompleteNode() throws Exception {
 	CategoryNode root = new CategoryNode("root");
 	root.complete();
 	
@@ -104,7 +104,7 @@ public class CategoryNodeTestComplete {
      * AFTER: Root and child are both complete.
      */
     @Test
-    public void completeOneChild_SetChildComplete_BothComplete() {
+    public void completeOneChild_SetChildComplete_BothComplete() throws Exception {
 	oneChildTree_child.complete();
 	assertExpectedPercent(100, oneChildTree_parent.getPercentComplete());
     }
@@ -117,7 +117,7 @@ public class CategoryNodeTestComplete {
      * AFTER: Root and child are both complete.
      */
     @Test
-    public void completeOneChild_SetRootComplete_BothComplete() {
+    public void completeOneChild_SetRootComplete_BothComplete() throws Exception {
 	oneChildTree_parent.complete();
 	assertExpectedPercent(100, oneChildTree_child.getPercentComplete());
     }
@@ -130,7 +130,7 @@ public class CategoryNodeTestComplete {
      * AFTER: Root is partially complete.
      */
     @Test
-    public void completeMultChild_SetOneDirectDescendentComplete_RootPartiallyComplete() {
+    public void completeMultChild_SetOneDirectDescendentComplete_RootPartiallyComplete() throws Exception {
 	twoChildTree_child1.complete();
 	assertExpectedPercent(50, twoChildTree_parent.getPercentComplete());
     }
@@ -143,7 +143,7 @@ public class CategoryNodeTestComplete {
      * AFTER: Root is fully complete.
      */
     @Test
-    public void completeMultChild_SetAllDirectDescendentsComplete_RootComplete() {
+    public void completeMultChild_SetAllDirectDescendentsComplete_RootComplete() throws Exception {
 	twoChildTree_child1.complete();
 	twoChildTree_child2.complete();
 	
@@ -158,7 +158,7 @@ public class CategoryNodeTestComplete {
      * AFTER: All descendents are complete.
      */
     @Test
-    public void completeMultChild_SetRootComplete_AllDescendentsComplete() {
+    public void completeMultChild_SetRootComplete_AllDescendentsComplete() throws Exception {
 	twoChildTree_child2.complete();
 	twoChildTree_parent.complete();
 	
@@ -174,7 +174,7 @@ public class CategoryNodeTestComplete {
      * AFTER: All descendents are complete.
      */
     @Test
-    public void completeMultLayer_SetRootComplete_AllDescendentsComplete() {
+    public void completeMultLayer_SetRootComplete_AllDescendentsComplete() throws Exception {
 	threeLayerTree_layer1_root.complete();
 	
 	assertExpectedPercent(100, threeLayerTree_layer2_internal.getPercentComplete());
@@ -192,7 +192,7 @@ public class CategoryNodeTestComplete {
      * Root's other child is the same as before (incomplete).
      */
     @Test
-    public void completeMultLayer_SetInternalComplete_InternalDescendentsComplete() {
+    public void completeMultLayer_SetInternalComplete_InternalDescendentsComplete() throws Exception {
 	threeLayerTree_layer2_internal.complete();
 	
 	assertExpectedPercent(100, threeLayerTree_layer3_leaf1.getPercentComplete());
@@ -211,7 +211,7 @@ public class CategoryNodeTestComplete {
      * AFTER: Percent complete propagates up to Internal and Root.
      */
     @Test
-    public void completeMultLayer_SetLastLayerLeafComplete_PropagateUp() {
+    public void completeMultLayer_SetLastLayerLeafComplete_PropagateUp() throws Exception {
 	threeLayerTree_layer3_leaf1.complete();
 	
 	assertExpectedPercent(0, threeLayerTree_layer3_leaf2.getPercentComplete());
@@ -230,7 +230,7 @@ public class CategoryNodeTestComplete {
      * AFTER: Percent complete propagates up to Root.
      */
     @Test
-    public void completeMultLayer_SetMidLayerLeafComplete_PropagateUp() {
+    public void completeMultLayer_SetMidLayerLeafComplete_PropagateUp() throws Exception {
 	threeLayerTree_layer2_leaf.complete();
 	
 	assertExpectedPercent(0, threeLayerTree_layer3_leaf1.getPercentComplete());
@@ -249,7 +249,7 @@ public class CategoryNodeTestComplete {
      * AFTER: The Internal parent node is set to complete.
      */
     @Test
-    public void completeMultLayer_SetLastLayerLastIncompleteLeafComplete_InternalComplete() {
+    public void completeMultLayer_SetLastLayerLastIncompleteLeafComplete_InternalComplete() throws Exception {
 	threeLayerTree_layer3_leaf1.complete(); // before
 	threeLayerTree_layer3_leaf2.complete(); // during
 	
@@ -266,7 +266,7 @@ public class CategoryNodeTestComplete {
      * AFTER: All Nodes are set to complete.
      */
     @Test
-    public void completeMultLayer_SetLastIncompleteLeafComplete_AllComplete() {
+    public void completeMultLayer_SetLastIncompleteLeafComplete_AllComplete() throws Exception {
 	// before
 	threeLayerTree_layer3_leaf1.complete();
 	threeLayerTree_layer2_leaf.complete();
