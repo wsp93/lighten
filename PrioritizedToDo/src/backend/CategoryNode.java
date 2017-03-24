@@ -29,24 +29,6 @@ import java.util.NoSuchElementException;
  */
 public class CategoryNode {
     
-    ////////////////////////////////////////////////////////////////////
-    //				   TO DO			      //
-    ////////////////////////////////////////////////////////////////////
-    //								      //
-    // -Data should be persistent. Use a DB.			      //
-    // -Nodes sortable by deadline/% complete/both (group by)	      //
-    // -Add IDs for each node? (Be careful of overflow)		      //
-    //								      //
-    //	Optional:						      //
-    // -Sync Deadlines with Calendar				      //
-    // -Implement deadlineChangesCtr				      //
-    // -Reminders						      //
-    // -Repeatable						      //
-    // -Display “landmarks” (labels of sub-cat completion) on bars    //
-    // -Bookmarks (to quickly reach common cats)		      //
-    // -Implement Iterable to iterate over children for cleaner code  //
-    ////////////////////////////////////////////////////////////////////
-    
     /******************************************************************/
     /*				  CONSTANTS			      */
     /******************************************************************/
@@ -121,12 +103,6 @@ public class CategoryNode {
 	checkConstraintsRemove(child);
 	removeChildOnly(child);
     }
-    
-    /*********************************************************************/
-    /* TO DO:								 */
-    /*									 */
-    /* Consider the case when you have completed all tasks.		 */
-    /*********************************************************************/
     
     public void complete() {
 	setDescendentsComplete(this);
