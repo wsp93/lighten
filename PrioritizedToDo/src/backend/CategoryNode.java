@@ -8,10 +8,12 @@
 
 package backend;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import sql.DBSetup;
 
 /**
  * Represents a Category whose progress we wish to track. Categories may have
@@ -39,6 +41,7 @@ public class CategoryNode {
     /*				   FIELDS			      */
     /******************************************************************/
     
+    private long id;
     private String name;
     private List<CategoryNode> children; // represents sub-categories
     private CategoryNode parent; // super-category
@@ -51,15 +54,16 @@ public class CategoryNode {
     /*				 CONSTRUCTORS			      */
     /******************************************************************/
     
-    public CategoryNode(String name) throws IllegalArgumentException {
+    public CategoryNode(String name) throws IllegalArgumentException, SQLException {
 	this(name, null);
     }
     
-    public CategoryNode(String name, LocalDateTime deadline) throws IllegalArgumentException {
+    public CategoryNode(String name, LocalDateTime deadline) throws IllegalArgumentException, SQLException {
 	if(name == null) {
 	    throw new IllegalArgumentException("CategoryNode needs a Name");
 	}
 	
+	this.id = DBSetup.getNextAvailableID();
 	this.name = name;
 	children = new LinkedList(); // change if get() is called more often than add/remove
 	parent = null;
