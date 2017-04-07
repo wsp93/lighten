@@ -10,8 +10,13 @@ package sql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import static sql.SqlQueries.CREATE_SUBCATEGORY_TABLE;
+import static sql.SqlQueries.CREATE_CATEGORY_TABLE;
+import static sql.SqlQueries.GET_MAX_ID;
+import static sql.SqlQueries.GET_SORTED_IDS;
 
 public class DBSetup {
     
@@ -20,26 +25,6 @@ public class DBSetup {
     /******************************************************************/
     
     public static final String DB_URL = "jdbc:sqlite:main.db";
-    public static final String CREATE_CATEGORY_TABLE_SQL =
-	    "CREATE TABLE IF NOT EXISTS Category (\n"
-	    + "id integer NOT NULL, \n"
-	    + "name text NOT NULL, \n"
-	    + "isComplete integer NOT NULL, \n" // SQLite doesn't use booleans
-	    + "deadline text, \n"
-	    + "completionDate text, \n"
-	    
-	    + "PRIMARY KEY(id), \n"
-	    + ");";
-    public static final String CREATE_SUBCATEGORY_TABLE_SQL =
-	    "CREATE TABLE IF NOT EXISTS Subcategory (\n"
-	    + "parentID integer NOT NULL, \n"
-	    + "childID integer NOT NULL, \n"
-	    
-	    + "PRIMARY KEY(parentID), \n"
-	    + "PRIMARY KEY(childID), \n"
-	    + "FOREIGN KEY (parentID) REFERENCES Category(id), \n"
-	    + "FOREIGN KEY (childID) REFERENCES Category(id), \n"
-	    + ");";
     
     /******************************************************************/
     /*				  FIELDS			      */
@@ -61,12 +46,121 @@ public class DBSetup {
     
     public static void createCategoryTable() throws SQLException {
 	connect();
-	createTableStmt.execute(CREATE_CATEGORY_TABLE_SQL);
+	createTableStmt.execute(CREATE_CATEGORY_TABLE);
     }
     
     public static void createSubcategoryTable() throws SQLException {
 	connect();
-	createTableStmt.execute(CREATE_SUBCATEGORY_TABLE_SQL);
+	createTableStmt.execute(CREATE_SUBCATEGORY_TABLE);
     }
+    
+    /******************************************************************/
+    /*				 ADD, REMOVE			      */
+    /******************************************************************/
+    
+    public static void add() {
+	throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public static void remove() {
+	throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public static void removeSubtree() {
+	throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    /******************************************************************/
+    /*				   GETTERS			      */
+    /******************************************************************/
+    
+    public static void getID() {
+	throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public static long getNextAvailableID() throws SQLException {
+	connect();
+	long nextAvailableID = 0;
+	Statement stmt = conn.createStatement();
+	
+	ResultSet result = stmt.executeQuery(GET_MAX_ID);
+	if(result.next()) {
+	    long maxIDInTable = result.getLong("id");
+	    nextAvailableID = maxIDInTable + 1;
+	    
+	    boolean overflow = nextAvailableID < 0;
+	    if(overflow) {
+		nextAvailableID = findUnusedID();
+	    }
+	}
+	
+	return nextAvailableID;
+    }
+    
+    private static long findUnusedID() throws SQLException {
+	Statement stmt = conn.createStatement();
+	ResultSet resultSet = stmt.executeQuery(GET_SORTED_IDS);
+	
+	long nextConsecutive = 0;
+	while(resultSet.next()) {
+	    if(nextConsecutive == resultSet.getLong("id")) {
+		nextConsecutive++;
+	    }
+	    else return nextConsecutive;
+	}
+	
+	throw new RuntimeException("All IDs used");
+    }
+    
+    public static void getName() {
+	throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public static void getIsComplete() {
+	throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public static void getDeadline() {
+	throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public static void getCompletionDate() {
+	throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public static void getChildren() {
+	throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public static void getParent() {
+	throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    /******************************************************************/
+    /*				   SETTERS			      */
+    /******************************************************************/
 
+    public static void setName() {
+	throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public static void setIsComplete() {
+	throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public static void setDeadline() {
+	throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public static void setCompletionDate() {
+	throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public static void setChild() {
+	throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    public static void setParent() {
+	throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
