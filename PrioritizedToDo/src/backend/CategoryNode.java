@@ -189,6 +189,32 @@ public class CategoryNode {
     /*				PRIVATE HELPERS			      */
     /******************************************************************/
     
+    private void checkConstraintsAdd(CategoryNode child) {
+	if(child.parent != null) {
+	    throw new IllegalArgumentException("This child already has a parent");
+	}
+	if(isComplete) {
+	    throw new IllegalArgumentException("This Node is already complete");
+	}
+    }
+    
+    private void checkConstraintsRemove(CategoryNode child) {
+	if(child == null) {
+	    throw new IllegalArgumentException("Child is null");
+	}
+	if(child == this) {
+	    throw new IllegalArgumentException("Cannot remove self");
+	}
+	if(children.isEmpty()) {
+	    throw new NoSuchElementException("Removing from a childless Node");
+	}
+    }
+    
+    private void removeChildOnly(CategoryNode child) {
+	children.remove(child);
+	child.parent = null;
+    }
+    
     // find the total number of leaf nodes that descend from this node.
     private int getTotalLeaves(CategoryNode root) {
 	if(root != null) {
@@ -228,23 +254,6 @@ public class CategoryNode {
 	return 0;
     }
     
-    private void removeChildOnly(CategoryNode child) {
-	children.remove(child);
-	child.parent = null;
-    }
-    
-    private void checkConstraintsRemove(CategoryNode child) {
-	if(child == null) {
-	    throw new IllegalArgumentException("Child is null");
-	}
-	if(child == this) {
-	    throw new IllegalArgumentException("Cannot remove self");
-	}
-	if(children.isEmpty()) {
-	    throw new NoSuchElementException("Removing from a childless Node");
-	}
-    }
-    
     private void setDescendentsComplete(CategoryNode root) {
 	if(root != null) {
 	    root.isComplete = true;
@@ -252,15 +261,6 @@ public class CategoryNode {
 	    for(CategoryNode child : root.children) {
 		setDescendentsComplete(child);
 	    }
-	}
-    }
-
-    private void checkConstraintsAdd(CategoryNode child) {
-	if(child.parent != null) {
-	    throw new IllegalArgumentException("This child already has a parent");
-	}
-	if(isComplete) {
-	    throw new IllegalArgumentException("This Node is already complete");
 	}
     }
 }
