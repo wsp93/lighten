@@ -74,10 +74,6 @@ public class DBSetup {
     /*				   GETTERS			      */
     /******************************************************************/
     
-    public static void getID() {
-	throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
     public static long getNextAvailableID() throws SQLException {
 	connect();
 	long nextAvailableID = 0;
@@ -116,30 +112,6 @@ public class DBSetup {
 	throw new RuntimeException("All IDs used");
     }
     
-    public static void getName() {
-	throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
-    public static void getIsComplete() {
-	throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
-    public static void getDeadline() {
-	throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
-    public static void getCompletionDate() {
-	throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
-    public static void getChildren() {
-	throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
-    public static void getParent() {
-	throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
     /******************************************************************/
     /*				   SETTERS			      */
     /******************************************************************/
@@ -148,23 +120,15 @@ public class DBSetup {
 	throw new UnsupportedOperationException("Not supported yet.");
     }
     
-    public static void setIsComplete() {
-	throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
     public static void setDeadline() {
 	throw new UnsupportedOperationException("Not supported yet.");
     }
     
+    public static void setIsComplete() {
+	throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
     public static void setCompletionDate() {
-	throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
-    public static void setChild() {
-	throw new UnsupportedOperationException("Not supported yet.");
-    }
-    
-    public static void setParent() {
 	throw new UnsupportedOperationException("Not supported yet.");
     }
 }
