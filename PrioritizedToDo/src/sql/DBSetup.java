@@ -81,16 +81,18 @@ public class DBSetup {
     public static long getNextAvailableID() throws SQLException {
 	connect();
 	long nextAvailableID = 0;
-	Statement stmt = conn.createStatement();
 	
-	ResultSet result = stmt.executeQuery(GET_MAX_ID);
-	if(result.next()) {
-	    long maxIDInTable = result.getLong("id");
-	    nextAvailableID = maxIDInTable + 1;
+	try (Statement stmt = conn.createStatement();
+		ResultSet result = stmt.executeQuery(GET_MAX_ID);) {
 	    
-	    boolean overflow = nextAvailableID < 0;
-	    if(overflow) {
-		nextAvailableID = findUnusedID();
+	    if(result.next()) {
+		long maxIDInTable = result.getLong("id");
+		nextAvailableID = maxIDInTable + 1;
+		
+		boolean overflow = nextAvailableID < 0;
+		if(overflow) {
+		    nextAvailableID = findUnusedID();
+		}
 	    }
 	}
 	
@@ -98,15 +100,17 @@ public class DBSetup {
     }
     
     private static long findUnusedID() throws SQLException {
-	Statement stmt = conn.createStatement();
-	ResultSet resultSet = stmt.executeQuery(GET_SORTED_IDS);
-	
 	long nextConsecutive = 0;
-	while(resultSet.next()) {
-	    if(nextConsecutive == resultSet.getLong("id")) {
-		nextConsecutive++;
+	
+	try(Statement stmt = conn.createStatement();
+		ResultSet resultSet = stmt.executeQuery(GET_SORTED_IDS)) {
+	
+	    while(resultSet.next()) {
+		if(nextConsecutive == resultSet.getLong("id")) {
+		    nextConsecutive++;
+		}
+		else return nextConsecutive;
 	    }
-	    else return nextConsecutive;
 	}
 	
 	throw new RuntimeException("All IDs used");
